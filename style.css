@@ -1,3 +1,4 @@
+/* Reset + Global */
 * {
     margin: 0;
     padding: 0;
@@ -5,7 +6,9 @@
 }
 
 body {
-    background-color: teal;
+    background-color: #121212;
+    font-family: 'Segoe UI', sans-serif;
+    color: #fff;
     text-align: center;
 }
 
@@ -13,182 +16,149 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 20px 10px;
 }
 
+/* Heading */
 main h1 {
-    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+    color: #e0e0e0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
+/* Container for the board + controls */
 .container {
     position: relative;
-    margin-top: 20px;
-    height: 80vh;
-    width: 60vw;
+    width: 90vw;
+    max-width: 400px;
+    padding: 30px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    background-color: #fff;
-    overflow: hidden;
-    border-radius: 10px;
- 
+    gap: 20px;
 }
 
+/* 3×3 grid for game cells */
 .game {
-    margin-bottom: 25px;
-    height: 50vh;
-    width: 33vw;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;
+    aspect-ratio: 1;
+}
+
+/* Each cell / box */
+.box {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    font-size: 2rem;
+    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    user-select: none;
 }
 
-.box {
-    width: 10vw;
-    height: 15vh;
-    background-color: aliceblue;
-    border: 2px solid black;
-    box-shadow: 0 0 1rem rgba(0, 0,0, 0.2);
-    font-size: 3rem;
-    color: rgb(49, 49, 49);
-    border-radius: 10px;
-    margin-left: 10px;
-   position: relative;
-   z-index: 99;
+/* Hover effect: just a subtle background change (no longer scaling) */
+.box:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
 
-.container::before{
-    content: '';
-    height: 180vh;
-    width: 20vw;
-    background-image: linear-gradient(45deg,rgb(194, 83, 83),rgb(74, 74, 201),rgb(59, 172, 59),rgb(173, 173, 42),rgb(185, 103, 117));
-    position: absolute;
-    animation: rotate 6s linear infinite;
-}
-.container::after {
-    content: '';
-    inset: 5px;
-    position: absolute;
-    background: white;
-    border-radius: 10px;
-}
-@keyframes rotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+/* Button styling */
+button {
+    padding: 10px 20px;
+    border: 2px solid #fff;
+    border-radius: 6px;
+    background: transparent;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
 }
 
-.btnresetgame {
-    background-image: linear-gradient(90deg, rgb(210, 47, 210), pink, rgb(207, 150, 150));
-    padding: 10px;
-    border: 2px dotted black;
-    text-align: center;
-    margin-top: 10px;
-    z-index: 99;
-}
-.btnnewgame {
-    background-image: linear-gradient(90deg, rgb(210, 47, 210), pink, rgb(207, 150, 150));
-    padding: 10px;
-    border: 2px dotted black;
-    text-align: center;
-    margin-top: 10px;
+button:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
 
+/* Message overlay (shown when someone wins or there is a draw) */
 .msg-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90vw;
+    max-width: 300px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(5px);
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    z-index: 10;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    position: absolute;
-    width:  420px;
-    height: 400px;
-    font-size: 2rem;
-    border: 5px solid black;
-    background-image:linear-gradient(45deg,#00d2ff,#928dab);
-    top: 100px;
-    left: 440px;
-   z-index: 100;
+    color: #fff;
 }
+
+/* Winner / Draw message heading */
 .msg-1 {
-   padding: 20px;
-   color:red;
-   text-shadow: 2px 1px 0px black ;
-   font-size: 3rem;
+    font-size: 2rem;
+    color: #ffd700;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 2px #000;
 }
+
+/* Sub-message (e.g., “Play again?”) */
 .msg-2 {
-   padding: 20px;
+    font-size: 1rem;
+    margin-bottom: 15px;
 }
-.hide{
+
+/* Semi-transparent overlay behind the message */
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 9;
+}
+
+/* Utility: hide an element */
+.hide {
     display: none;
 }
 
-@media (max-width : 1200px) {
-    .container::before {
-        width: 60vw;
+/* Responsive tweaks for small screens */
+@media (max-width: 480px) {
+    main h1 {
+        font-size: 2rem;
     }
-   .container {
-    margin-top: 100px;
-    width: 80vw;
-    height:60vh;
-   }
-   .box {
-    height: 100px;
-    width: 100px;
-   }
-   .game{
-    height: 40vh;
-    width: 85vw;
-   }
-   .msg-container{
-    left: 4px;
-    top: 200px;
-   }
-   .btnresetgame {
-    margin-bottom: 40px;
-   }
-}
-@media (max-width: 376px) {
-    .game {
-        height: 40vh;
-        width: 85vw;
-        margin-top: 30px;
+
+    .container {
+        padding: 20px 15px;
     }
-    .container{
-        margin-top: 50px;
-        width: 80vw;
-        height: 60vh;
-    }
+
     .box {
-        width: 86px;
-        height: 86px;
-        margin-bottom: 5px;
-    }
-    .msg-container{
-        left: 8px;
-        top: 106px;
-        width: 358px;
-        height: 380px;
+        font-size: 1.8rem;
     }
 
-}
-@media (max-width : 415px){
-    .game {
-        margin-right: 10px;
+    button {
+        font-size: 0.9rem;
     }
-    .msg-container{
-        width: 405px;
-    }
-}
-@media (max-width : 390px){
-    .container{
-       width: 91vw;
-    }
-    .msg-container{
-        width: 382px;
-    }
-}
 
+    .msg-1 {
+        font-size: 1.5rem;
+    }
+
+    .msg-2 {
+        font-size: 0.9rem;
+    }
+}
